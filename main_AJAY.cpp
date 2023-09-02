@@ -1,8 +1,9 @@
 #include "onlineBanking.h"
 using namespace std;
 
-// Global Variables
+// Global Variables-----------------------------------------------
 vector<vector<string>> db;
+
 vector<string> row;
 string username;
 
@@ -12,9 +13,9 @@ void loginPage();
 
 void customisedDashboardPage();
 
-void logout();
-
 void customerDashboardPage();
+//----------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------
 
 int main() {
     landingPage();
@@ -127,7 +128,7 @@ void landingPage() {
 //Login Page
 void loginPage() {
     string userid, password, temPass, line, word;
-    int count,i;
+    int count = 0, i;
 
     system("cls");
     
@@ -148,33 +149,30 @@ void loginPage() {
 
             stringstream str(line);
 
-            while(getline(str, word))
+            while(getline(str, word)){
+                int i=0;
                 row.push_back(word);
+            
+                if( password==row[i]){
+                    username = userid;
+                    count = 1;
+                }
+                i++;
+            }
             db.push_back(row);
         }
-
+        
+        // cout<<db.size();
+        
         read.close();
+        // exit(0);
 
-        ifstream read("database\\"+userid+".txt");
-
-        while(read>>temPass){
-            if(temPass == password){
-                cout<<"Correct";
-                customisedDashboardPage();
-                break;
-            }
-            
-            if(read.eof()){
-                system("cls");
-                cout<<"\n\n\t\tWrong Password!!! Try Again........\n\n";
-                sleep(5);
-                landingPage();
-            }
-        }
-
-        read.close();
-
-    }else{
+        if (count)
+            customisedDashboardPage();
+        else
+            cout << "Check Line No. 166 ............\n\n";
+    }
+    else{
         //User Id doesn't Exist !!!!
         system("cls");
         cout<<"\n\n\t\tThere is no User like "<<userid<<" !!! Try again......\n\n";
@@ -267,7 +265,7 @@ void customisedDashboardPage() {
     }else if(choice == 3){
         // changePassword();
     }else if(choice == 4){
-        logout();
+        // logout();
     }else{
         system("cls");
         cout<<"\n\n\t\tWrong Input!!!! Try Again.....\n\n";
@@ -278,15 +276,6 @@ void customisedDashboardPage() {
     cout<<endl<<endl;
 }
 
-//Logout Function
-void logout() {
-    db.clear();
-    cout<<"\n\n\t\tThanks for Visiting !!! See you very soon Mr. "<<username<<".........\n\n";
-    sleep(5);
-    landingPage();
-}
-
-//Customer Dashboard Page
 void customerDashboardPage() {
     string userid="divyaveer", line, word;
     fstream file("database\\"+userid+".txt", ios::in);
@@ -417,24 +406,14 @@ void customerDashboardPage() {
         }else if(currAcc != "y" && ppfAcc == "y"){
             // viewPublicProviedFundAccount();
         }else if(currAcc != "y" && ppfAcc != "y"){
-            logout();
+            // logout();
         }
     }else if(choice == 3){
-        if(currAcc == "y" && ppfAcc == "y"){
-            // viewPublicProvidedFundAccount();
-        }else if(currAcc == "y" || ppfAcc == "y"){
-            logout();
-        }else{
-            // back();
-        }
+
     }else if(choice == 4){
-        if(currAcc == "y" && ppfAcc == "y"){
-            logout();
-        }else if(currAcc == "y" || ppfAcc == "y"){
-            // back();
-        }
+
     }else if(choice == 5){
-        // back();
+
     }else{
         system("cls");
         cout<<"\n\n\t\tWrong Input !!!! Try Again......\n\n";
